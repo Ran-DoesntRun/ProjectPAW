@@ -221,7 +221,7 @@ body {
     }
 }
 
-a:link, a:visited, a:active {
+a:link, a:visited, a:active, a{
   text-decoration: none;
 }
 
