@@ -39,9 +39,18 @@ function daftarPelanggan($conn, $email, $nama, $alamat, $password, $noTelp) {
     }
 }
 
-/* function tampilTransaksiByEmail($conn, $email){
-    $sql = "SELECT * FROM pelanggan WHERE email = '$email'"
-} */
+function tampil_transaksi_by_email($conn, $email){
+            $sql = "SELECT * FROM transaksi WHERE email = '$email'";
+            $result = $conn->query($sql);
+
+            $transaksi = [];
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    $transaksi[] = $row;
+                }
+            }
+            return $transaksi;
+        }
 
 function loginPelanggan($conn, $email, $password) {
     $sql = "SELECT * FROM pelanggan WHERE email = '$email' AND password = '$password'";

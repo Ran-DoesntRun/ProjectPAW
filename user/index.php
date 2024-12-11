@@ -19,7 +19,7 @@ session_start();
                 <h1>WEBSITE PENJUALAN JAM TANGAN</h1>
             </div>
             <div class="header-buttons">
-                <a href="cart.php" class="cart-icon">🛒</a>
+                <a href="RiwayatTransaksi.php" class="cart-icon">🛒</a>
                 <?php
                     if (!isset($_SESSION['user'])) {
                 ?>
