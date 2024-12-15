@@ -18,11 +18,19 @@
 
         $email = ($_SESSION['user']);
         $dataTransaksi = tampil_transaksi_by_email($conn, $email);
+
+        if($_SERVER['REQUEST_METHOD']=="POST" && $_POST['dicari'] != ""){
+            $dicari = $_POST['dicari'];
+            $dataTransaksi = pencarian_TRANSAKSI($conn, $dicari);
+        }
     ?>
 
     
         <div class="search-bar">
-            <input type="text" placeholder="Kamu bisa cari berdasarkan Nama Penjual, No. Pesanan atau Nama Produk">
+            <form action="" method="POST">
+            <input type="text" name="dicari" value = "" placeholder="Masukan Nomor Transaksi ...">
+            <button type="submit" name="Cari" >Cari</button>
+            </form>
         </div>
     <?php 
         foreach ($dataTransaksi as $data){    
@@ -33,9 +41,10 @@
             <div class="order-item">
                 <img src="<?php echo $dataProduk['foto']?>" alt="<?php echo $dataProduk['nama'] ?>">
                 <div class="order-details">
+                    <h3>Nomor Transaksi: <?php echo $data['idTransaksi'] ?></h3>
                     <h4><?php echo $dataProduk['nama'] ?></h4>
                     <p>Brand: <?php echo $dataProduk['merk'] ?></p>
-                    <p><?php $dataProduk['harga'] ?></p>
+                    <p>Harga: <?php echo $dataProduk['harga'] ?></p>
                 </div>
             </div>
             <div class="order-summary">

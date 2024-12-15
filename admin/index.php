@@ -20,12 +20,12 @@
     }
 
     $jumlahAllProduct = count(tampil_produk($conn));
-    $transaksi = tampil_transaksi($conn);
-    $jumlahTransaksi = count($transaksi);
+    $index = tampil_transaksi($conn);
+    $jumlahTransaksi = count($index);
     $jumlahPelanggan = count(tampil_pelanggan($conn));
     $jumlahTransaksiBerhasilBayar = $jumlahTransaksiProsesBayar = $jumlahTransaksiGagalBayar = 
     $jumlahTransaksiBerhasilKirim = $jumlahTransaksiProsesKirim = $jumlahTransaksiGagalKirim = 0;
-    foreach($transaksi as $data){
+    foreach($index as $data){
         if($data['statusBayar']=="berhasil") $jumlahTransaksiBerhasilBayar+=1;
         elseif($data['statusBayar']=="proses") $jumlahTransaksiProsesBayar+=1;
         else{$jumlahTransaksiGagalBayar+=1;}
@@ -64,18 +64,18 @@
             <div class="dashboard">
                 <h1>Halaman Dashboard</h1>
                 <div class="stats">
-                    <a href="view-all-products.php"><div class="card anotherbg">
+                    <a href="index.php?table=produk"><div class="card anotherbg">
                         <p>Jumlah Produk</p>
                         <h2><?php echo $jumlahAllProduct; ?></h2>
                     </div>
                     </a>
-                    <a href="view-transaksi.php?filter=all&status=all">
+                    <a href="view-index.php?table=transaksi&filter=all&status=all">
                         <div class="card anotherbg">
                         <p>Jumlah Transaksi</p>
                         <h2><?php echo $jumlahTransaksi; ?></h2>
                     </div>
                     </a>
-                    <a href="view-pelanggan.php">
+                    <a href="index.php?table=pelanggan">
                     <div class="card anotherbg">
                         <p>Jumlah Pelanggan</p>
                         <h2><?php echo $jumlahPelanggan; ?></h2>
@@ -84,19 +84,19 @@
                     </div>
                 <h2>Jumlah Transaksi Berdasarkan Status Pembayaran</h2>
                 <div class="stats">
-                    <a href="view-transaksi.php?filter=pembayaran&status=berhasil">
+                    <a href="view-index.php?filter=pembayaran&status=berhasil">
                     <div class="card anotherbg">
                         <p>Berhasil</p>
                         <h2><?php echo $jumlahTransaksiBerhasilBayar; ?></h2>
                     </div>
                     </a>
-                    <a href="view-transaksi.php?filter=pembayaran&status=proses">
+                    <a href="view-index.php?filter=pembayaran&status=proses">
                     <div class="card anotherbg">
                         <p>Proses</p>
                         <h2><?php echo $jumlahTransaksiProsesBayar; ?></h2>
                     </div>
                     </a>
-                    <a href="view-transaksi.php?filter=pembayaran&status=gagal">
+                    <a href="view-index.php?filter=pembayaran&status=gagal">
                     <div class="card anotherbg">
                         <p>Gagal</p>
                         <h2><?php echo $jumlahTransaksiGagalBayar; ?></h2>
@@ -105,19 +105,19 @@
                 </div>
                 <h2>Jumlah Transaksi Berdasarkan Status Pengiriman</h2>
                 <div class="stats">
-                    <a href="view-transaksi.php?filter=pengiriman&status=berhasil">
+                    <a href="view-index.php?filter=pengiriman&status=berhasil">
                     <div class="card anotherbg">
                         <p>Berhasil</p>
                         <h2><?php echo $jumlahTransaksiBerhasilKirim; ?></h2>
                     </div>
                     </a>
-                    <a href="view-transaksi.php?filter=pengiriman&status=proses">
+                    <a href="view-index.php?filter=pengiriman&status=proses">
                     <div class="card anotherbg">
                         <p>Proses</p>
                         <h2><?php echo $jumlahTransaksiProsesKirim; ?></h2>
                     </div>
                     </a>
-                    <a href="view-transaksi.php?filter=pengiriman&status=gagal">
+                    <a href="view-index.php?filter=pengiriman&status=gagal">
                     <div class="card anotherbg">
                         <p>Gagal</p>
                         <h2><?php echo $jumlahTransaksiGagalKirim; ?></h2>
@@ -125,6 +125,9 @@
                     </a>
                 </div>
             </div>
+        </div>
+        <div>
+            
         </div>
     </div>
 </body>

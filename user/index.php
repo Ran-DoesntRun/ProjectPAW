@@ -1,6 +1,13 @@
 <?php
 include 'proses.php';
 session_start();
+$produk = tampilkanProduk($conn);
+
+if($_SERVER['REQUEST_METHOD']=="POST"){
+    $filter = $_POST['filter'];
+    $dicari = $_POST['dicari'];
+    $produk = pencarian_PRODUK($conn, $filter, $dicari);
+}
 ?>
 <!DOCTYPE HTML>
 <html lang="en">
@@ -15,9 +22,11 @@ session_start();
 <body>
     <header>
         <div class="header-container">
+            <a href="index.php">
             <div class="logo">
                 <h1>WEBSITE PENJUALAN JAM TANGAN</h1>
             </div>
+            </a>
             <div class="header-buttons">
                 <a href="RiwayatTransaksi.php" class="cart-icon">🛒</a>
                 <?php
@@ -37,15 +46,23 @@ session_start();
 
     <section class="banner">
         <div class="banner-content">
-            <h2>PENJUALAN JAM ONLINE</h2>
-            <p>DISCOUNT HINGGA 75% SAMPAI 20 NOVEMBER 2024</p>
+            <form action="" method="POST">
+            <div class="mb-3">
+                <select class="form-select form-select-lg" name="filter" id="filter">
+                    <option selected value="nama">Filter</option>
+                    <option value="nama">Nama Produk</option>
+                    <option value="merk">Brand</option>
+                </select>
+            </div>
+            <input type="text" name="dicari" value=" " placeholder="Pencarian ...">
+            <button type="submit" name="Cari" >Cari</button>
+            </form>
         </div>
     </section>
 
     <main>
         <div class="product-grid">
             <?php
-            $produk = tampilkanProduk($conn);
             if (count($produk) > 0): 
             foreach ($produk as $item): ?>
             <div class="product">

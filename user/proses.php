@@ -80,4 +80,34 @@ function beli($conn, $id, $email, $jumlah, $alamatKirim){
     }
 }
 
+function pencarian_PRODUK($conn, $filter, $dicari){
+    $sql = "SELECT * FROM produk WHERE $filter LIKE '%$dicari%'";
+    echo $sql;
+
+    $result = $conn -> query($sql);
+
+    $produk = [];
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $produk[] = $row;
+        }
+    }
+    return $produk;
+}
+
+function pencarian_TRANSAKSI($conn, $dicari){
+
+    $sql = "SELECT * FROM transaksi WHERE idTransaksi LIKE '%$dicari%'";
+    echo $sql;
+
+    $result = $conn -> query($sql);
+
+    $produk = [];
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $produk[] = $row;
+        }
+    }
+    return $produk;
+}
 ?>
