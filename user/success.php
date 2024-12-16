@@ -10,7 +10,7 @@
     <header>
         <div class="header-container">
             <div class="logo">
-                <h1>WEBSITE PENJUALAN JAM TANGAN</h1>
+                <a href="index.php"><h1>WEBSITE PENJUALAN JAM TANGAN</h1></a>
             </div>
         </div>
     </header>
@@ -24,36 +24,13 @@
                 header("location: login.php");
             }
             $email = $_SESSION['user'];
+            $id = $_GET['idTransaksi'];
 
-            $id = $_POST['product'];
-            $jumlah = $_POST['jumlah'];
-            $alamat = $_POST['address'];
-            $dataProduk = tampilByIdProduk($conn, $id);
+            $transaksi = pencarian_TRANSAKSI($conn, $id);
+            $dataProduk = tampilByIdProduk($conn, $transaksi['idProduk']);
             $dataPelanggan = tampilPelanggan($conn, $email);
 
-            
-            
-            if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['password'])){
-                $password = $_POST['password'];
-                if($password == $dataPelanggan['password']){
-
-                    $hasil = beli($conn, $id, $email, $jumlah, $alamat);
-
-                    if($hasil!=False){
-                        header('location: success.php?idTransaksi='.$hasil);
-                    }else{
-                        echo "<script type='text/javascript'> window.alert('Penyimpanan Gagal') 
-                    window.location.href = 'buy.php?product=".$id."';
-                    </script>";
-                    }
-                }
-                else{
-                    echo "<script type='text/javascript'> window.alert('Password Salah') 
-                    window.location.href = 'buy.php?product=".$id."';
-                    </script>";
-                }
-            }
-            $totalHarga = number_format($dataProduk['harga'] * $jumlah, 0, ',', '.');
+            $totalHarga = number_format($dataProduk['harga'] * $transaksi['jumlah'], 0, ',', '.');
         ?>
         <div class="purchase-container">
             <h2>Detail Pembelian</h2>
@@ -63,25 +40,25 @@
                 <p id="product-color"><?php echo $dataProduk['warna'] ?></p>
                 <p id="product-price">Rp.<?php echo number_format($dataProduk['harga'], 0, ',', '.'); ?></p>
             </div>
+            <h3>SILAHKAN KIRIMKAN BUKTI TRANSFER MELALUI WHATSAPP PADA NOMOR 082144224231</h3>
+            <h4>BATAS PENGIRIMAN BUKTI TRANSFER PADA <?php echo batas($transaksi['tglBeli']) ?></h4>
+            <p>Sertakan nomor transaksi dibawah ini sebagai pesan tambahan</p>
             <form action="konfirmasiPembelian.php" method="POST" class="purchase-form">
-                <input readonly type="number" name="product" value="<?php echo $id ?>" readonly hidden>
-            
+                <label for="idt">Nomor Transaksi</label>
+                <input readonly type="number" name="idt" value="<?php echo $id ?>" readonly>
+
                 <label for="jumlah">Jumlah Barang:</label>
-                <input readonly type="number" name="jumlah" value="<?php echo $jumlah ?>" readonly>
+                <input readonly type="number" name="jumlah" value="<?php echo $transaksi['jumlah'] ?>" readonly>
 
                 <label for="total">Total Harga:</label>
                 <input readonly type="text" name="harga" value="<?php echo "Rp.".$totalHarga ?>" readonly>
 
                 <label for="address">Alamat Pengiriman:</label>
-                <textarea id="address" name="address" rows="3" value="<?php $alamat ?>" required><?php echo $alamat ?></textarea>
+                <textarea readonly id="address" name="address" rows="3" value="<?php $transaksi['alamatKirim'] ?>" required><?php echo $transaksi['alamatKirim'] ?></textarea>
 
                 <label for="payment-method">Metode Pembayaran:</label>
                 <input readonly type="text" name="bayar" value="TRANSFER BANK BNI 532432432 a/n Pemilik" readonly> 
 
-                <label for="password">Konfirmasi Password:</label>
-                <input type="text" name="password" placeholder="Masukan Password Untuk konfirmasi Pembelian">
-
-                <button type="submit" class="buy-now-button">PESAN SEKARANG</button>
             </form>
         </div>
     </main>

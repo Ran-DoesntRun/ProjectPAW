@@ -64,9 +64,10 @@ function loginPelanggan($conn, $email, $password) {
 }
 
 function beli($conn, $id, $email, $jumlah, $alamatKirim){
+    date_default_timezone_set('Asia/Jakarta');
     $produk = tampilByIdProduk($conn, $id);
     $total = $produk['harga'] * $jumlah;
-    $tgl = date("Y-m-d");
+    $tgl = date("Y-m-d G:i:s");
 
     $status = "proses";
 
@@ -74,9 +75,10 @@ function beli($conn, $id, $email, $jumlah, $alamatKirim){
             VALUES ('$email', '$jumlah', '$tgl', '$status', '$alamatKirim','$id',  '$status')";
     
     if ($conn->query($sql) === TRUE) {
-        return True;
+        $last_id = $conn->insert_id;
+        return $last_id;
     } else {
-        return "Error: " . $sql . "<br>" . $conn->error;
+        return False;
     }
 }
 
@@ -97,17 +99,23 @@ function pencarian_PRODUK($conn, $filter, $dicari){
 
 function pencarian_TRANSAKSI($conn, $dicari){
 
-    $sql = "SELECT * FROM transaksi WHERE idTransaksi LIKE '%$dicari%'";
+    $sql = "SELECT * FROM transaksi WHERE idTransaksi = '$dicari'";
     echo $sql;
 
     $result = $conn -> query($sql);
 
-    $produk = [];
-    if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            $produk[] = $row;
-        }
-    }
-    return $produk;
+    return $result->fetch_assoc();
 }
+
+function batas($tgl){
+    date_default_timezone_set('Asia/Jakarta');
+
+    $originalTime = $tgl;
+    $dateTime = new DateTime($originalTime);
+    $dateTime->modify('+1 hour');
+    $newTime = $dateTime->format('Y-m-d H:i:s');
+    
+    return $newTime;
+}
+
 ?>

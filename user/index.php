@@ -54,7 +54,7 @@ if($_SERVER['REQUEST_METHOD']=="POST"){
                     <option value="merk">Brand</option>
                 </select>
             </div>
-            <input type="text" name="dicari" value=" " placeholder="Pencarian ...">
+            <input type="text" name="dicari" placeholder="Pencarian ...">
             <button type="submit" name="Cari" >Cari</button>
             </form>
         </div>

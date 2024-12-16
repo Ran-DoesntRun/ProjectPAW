@@ -53,7 +53,7 @@
                 <textarea id="address" name="address" rows="3" required><?php echo $dataPelanggan['alamat']; ?></textarea>
 
                 <label for="payment-method">Metode Pembayaran:</label>
-                <input type="text" name="bayar" value="SAAT INI HANYA MENDUKUNG PEMBAYARAN COD" readonly> 
+                <input type="text" name="bayar" value="TRANSFER BANK BNI 532432432 a/n Pemilik" readonly> 
 
                 <button type="submit" class="buy-now-button">PESAN SEKARANG</button>
             </form>
