@@ -84,7 +84,6 @@ function beli($conn, $id, $email, $jumlah, $alamatKirim){
 
 function pencarian_PRODUK($conn, $filter, $dicari){
     $sql = "SELECT * FROM produk WHERE $filter LIKE '%$dicari%'";
-    echo $sql;
 
     $result = $conn -> query($sql);
 
@@ -100,7 +99,6 @@ function pencarian_PRODUK($conn, $filter, $dicari){
 function pencarian_TRANSAKSI($conn, $dicari){
 
     $sql = "SELECT * FROM transaksi WHERE idTransaksi = '$dicari'";
-    echo $sql;
 
     $result = $conn -> query($sql);
 
