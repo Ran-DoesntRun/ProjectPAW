@@ -127,4 +127,103 @@ function tampil_transaksi_by_email($conn, $email){
     }
     return $transaksi;
 }
+
+function tampil_transaksi_by_idTransaksi($conn, $id){
+    $sql = "SELECT * FROM transaksi WHERE idTransaksi = '$id'";
+    $result = $conn->query($sql);
+
+    return $result->fetch_assoc();
+}
+
+function tampilByIdProduk($conn, $id){
+    $sql = "SELECT * FROM produk WHERE idProduk = $id";
+    $result = $conn -> query($sql);
+
+    return $result->fetch_assoc();
+}
+
+function cetakProduk($prd){
+    echo "<tr>";
+    echo "<td>" . $prd['idProduk'] . "</td>";
+    echo "<td>" . $prd['nama'] . "</td>";
+    echo "<td>" . $prd['harga'] . "</td>";
+    echo "<td>" . $prd['merk'] . "</td>";
+    echo "<td>" . $prd['warna'] . "</td>";
+    echo "<td>" . $prd['stock'] . "</td>";
+    echo "</tr>";
+}
+
+function cetakPelanggan($plg){
+    echo "<tr>";
+        echo "<td>" . $plg['email'] . "</td>";
+        echo "<td>" . $plg['nama'] . "</td>";
+        echo "<td>" . $plg['alamat'] . "</td>";
+        echo "<td>" . $plg['NoTelp']. "</td>";
+    echo "</tr>";
+}
+
+function cetakTransaksi($trk, $table){
+    echo "<tr>";
+    echo "<td>" . $trk['idTransaksi'] . "</td>";
+    echo "<td>" . $trk['idProduk'] . "</td>";
+    echo "<td>" . $trk['email'] . "</td>";
+    echo "<td>" . $trk['jumlah'] . "</td>";
+    echo "<td>" . $trk['tglBeli'] . "</td>";
+    echo '<form action="index.php" method="POST">';          
+    echo '<input type="text" name="table" hidden value="'.$table .'">';
+    echo '<input type="text" name="idTransaksi" value="'.$trk['idTransaksi'].'" hidden>';
+    echo '<td> <select name="statusBayar">';
+    echo '<option value="berhasil" '. ( $trk['statusBayar'] == 'berhasil' ? "SELECTED" : "" ).' >BERHASIL</option>';
+    echo '<option value="proses" '. ( $trk['statusBayar'] == 'proses' ? "SELECTED" : "" ).' >PROSES</option>';
+    echo '</select>';
+    echo '</td>';
+    echo "<td>" . $trk['alamatKirim'] . "</td>";
+    echo '<td> <select name="statusPengiriman">';
+    echo '<option value="berhasil" '. ( $trk['statusPengiriman'] == 'berhasil' ? "SELECTED" : "" ).' >BERHASIL</option>';
+    echo '<option value="proses" '. ( $trk['statusPengiriman'] == 'proses' ? "SELECTED" : "" ).' >PROSES</option>';
+    echo '</select>';
+    echo '<button type="submit" name="SUBMIT">SUBMIT</button>';
+    echo '</td></form>';
+    echo "</tr>";
+}
+
+function editTransaksi($conn, $id, $statusBayar, $statusKirim){
+
+    $sql = "UPDATE transaksi SET statusBayar = '$statusBayar', statusPengiriman = '$statusKirim' WHERE idTransaksi = $id;";
+    if ($conn->query($sql) === TRUE) {
+        return $id;
+    } else {
+        return $conn->error;
+    }
+}
+
+function timeDiff($start_date) {
+    date_default_timezone_set('Asia/Jakarta');
+    $start_timestamp = strtotime($start_date);
+    $end_timestamp = strtotime(date("Y-m-d G:i:s"));
+
+    $difference_in_seconds = abs($end_timestamp - $start_timestamp);
+    $difference_in_minutes = $difference_in_seconds / 60;
+
+    return $difference_in_minutes;
+}
+
+function editStock($conn, $id){
+    $data = tampilByIdProduk($conn, $id);
+    $new_stock = ($data['stock'] + 1);
+    $sql = "UPDATE produk SET stock = '$new_stock'  WHERE idProduk = $id";
+    
+    $conn -> query($sql);
+}
+
+function deleteTransaksi($conn, $id, $idProduk){
+    $sql = "DELETE FROM transaksi WHERE idTransaksi = $id";
+
+    if ($conn->query($sql) === TRUE) {
+        editStock($conn, $idProduk);
+            return $id;
+        } else {
+            return $conn->error;
+        }
+    }
 ?>

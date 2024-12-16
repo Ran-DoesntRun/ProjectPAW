@@ -71,8 +71,8 @@ function beli($conn, $id, $email, $jumlah, $alamatKirim){
 
     $status = "proses";
 
-    $sql = "INSERT INTO transaksi (email, jumlah, tglBeli, statusBayar, alamatKirim, idProduk, statusPengiriman) 
-            VALUES ('$email', '$jumlah', '$tgl', '$status', '$alamatKirim','$id',  '$status')";
+    $sql = "INSERT INTO transaksi (email, jumlah, tglBeli, statusBayar, alamatKirim, idProduk, statusPengiriman, total) 
+            VALUES ('$email', '$jumlah', '$tgl', '$status', '$alamatKirim','$id',  '$status', '$total')";
     
     if ($conn->query($sql) === TRUE) {
         $last_id = $conn->insert_id;

@@ -18,8 +18,9 @@
         header("Location: login.php");
         exit;
     }
+    
 
-    $allProduct =tampil_produk($conn);
+    $allProduct = tampil_produk($conn);
     $transaksi = tampil_transaksi($conn);
     $pelanggan = tampil_pelanggan($conn);
     $jumlahAllProduct = count($allProduct);
@@ -27,14 +28,30 @@
     $jumlahPelanggan = count($pelanggan);
     $jumlahTransaksiBerhasilBayar = $jumlahTransaksiProsesBayar = $jumlahTransaksiGagalBayar = 
     $jumlahTransaksiBerhasilKirim = $jumlahTransaksiProsesKirim = $jumlahTransaksiGagalKirim = 0;
-    foreach($transaksi as $data){
-        if($data['statusBayar']=="berhasil") $jumlahTransaksiBerhasilBayar+=1;
-        elseif($data['statusBayar']=="proses") $jumlahTransaksiProsesBayar+=1;
-        else{$jumlahTransaksiGagalBayar+=1;}
+    foreach ($transaksi as $data) {
+        if ($data['statusBayar'] == "berhasil") $jumlahTransaksiBerhasilBayar += 1;
+        elseif ($data['statusBayar'] == "proses") $jumlahTransaksiProsesBayar += 1;
+        else {
+            $jumlahTransaksiGagalBayar += 1;
+        }
 
-        if($data['statusPengiriman']=="berhasil") $jumlahTransaksiBerhasilKirim+=1;
-        elseif($data['statusPengiriman']=="proses") $jumlahTransaksiProsesKirim+=1;
-        else{$jumlahTransaksiGagalKirim+=1;}
+        if ($data['statusPengiriman'] == "berhasil") $jumlahTransaksiBerhasilKirim += 1;
+        elseif ($data['statusPengiriman'] == "proses") $jumlahTransaksiProsesKirim += 1;
+        else {
+            $jumlahTransaksiGagalKirim += 1;
+        }
+    }
+
+    if($_SERVER['REQUEST_METHOD']=="POST" && isset($_POST['statusBayar'])){
+        $idt = $_POST['idTransaksi'];
+        echo $_POST['statusBayar'];
+        $data = tampil_transaksi_by_idTransaksi($conn, $idt);
+        $hasilEdit = editTransaksi($conn, $idt, $_POST['statusBayar'], $_POST['statusPengiriman']);
+        if($hasilEdit == True){
+            header('location: index.php?table=transaksi&idTransaksi='.$idt);
+        }else{
+            echo $hasilEdit;
+        }
     }
     ?>
     <div class="container">
@@ -66,130 +83,187 @@
             <div class="dashboard">
                 <h1>Halaman Dashboard</h1>
                 <div class="stats">
-                    <a href="index.php?table=produk"><div class="card anotherbg">
-                        <p>Jumlah Produk</p>
-                        <h2><?php echo $jumlahAllProduct; ?></h2>
-                    </div>
+                    <a href="index.php?table=produk">
+                        <div class="card anotherbg">
+                            <p>Jumlah Produk</p>
+                            <h2><?php echo $jumlahAllProduct; ?></h2>
+                        </div>
                     </a>
                     <a href="index.php?table=transaksi">
                         <div class="card anotherbg">
-                        <p>Jumlah Transaksi</p>
-                        <h2><?php echo $jumlahTransaksi; ?></h2>
-                    </div>
+                            <p>Jumlah Transaksi</p>
+                            <h2><?php echo $jumlahTransaksi; ?></h2>
+                        </div>
                     </a>
                     <a href="index.php?table=pelanggan">
-                    <div class="card anotherbg">
-                        <p>Jumlah Pelanggan</p>
-                        <h2><?php echo $jumlahPelanggan; ?></h2>
-                    </div>
+                        <div class="card anotherbg">
+                            <p>Jumlah Pelanggan</p>
+                            <h2><?php echo $jumlahPelanggan; ?></h2>
+                        </div>
                     </a>
-                    </div>
+                </div>
                 <h2>Jumlah Transaksi Berdasarkan Status Pembayaran</h2>
                 <div class="stats">
                     <a href="index.php?table=transaksi&filter=pembayaran&status=berhasil">
-                    <div class="card anotherbg">
-                        <p>Berhasil</p>
-                        <h2><?php echo $jumlahTransaksiBerhasilBayar; ?></h2>
-                    </div>
+                        <div class="card anotherbg">
+                            <p>Berhasil</p>
+                            <h2><?php echo $jumlahTransaksiBerhasilBayar; ?></h2>
+                        </div>
                     </a>
                     <a href="index.php?table=transaksi&filter=pembayaran&status=proses">
-                    <div class="card anotherbg">
-                        <p>Proses</p>
-                        <h2><?php echo $jumlahTransaksiProsesBayar; ?></h2>
-                    </div>
+                        <div class="card anotherbg">
+                            <p>Proses</p>
+                            <h2><?php echo $jumlahTransaksiProsesBayar; ?></h2>
+                        </div>
                     </a>
                 </div>
                 <h2>Jumlah Transaksi Berdasarkan Status Pengiriman</h2>
                 <div class="stats">
                     <a href="index.php?table=transaksi&filter=pengiriman&status=berhasil">
-                    <div class="card anotherbg">
-                        <p>Berhasil</p>
-                        <h2><?php echo $jumlahTransaksiBerhasilKirim; ?></h2>
-                    </div>
+                        <div class="card anotherbg">
+                            <p>Berhasil</p>
+                            <h2><?php echo $jumlahTransaksiBerhasilKirim; ?></h2>
+                        </div>
                     </a>
                     <a href="index.php?table=transaksi&filter=pengiriman&status=proses">
-                    <div class="card anotherbg">
-                        <p>Proses</p>
-                        <h2><?php echo $jumlahTransaksiProsesKirim; ?></h2>
-                    </div>
+                        <div class="card anotherbg">
+                            <p>Proses</p>
+                            <h2><?php echo $jumlahTransaksiProsesKirim; ?></h2>
+                        </div>
                     </a>
                     <a href="index.php?table=transaksi&filter=pengiriman&status=gagal">
-                    <div class="card anotherbg">
-                        <p>Gagal</p>
-                        <h2><?php echo $jumlahTransaksiGagalKirim; ?></h2>
-                    </div>
+                        <div class="card anotherbg">
+                            <p>Gagal</p>
+                            <h2><?php echo $jumlahTransaksiGagalKirim; ?></h2>
+                        </div>
                     </a>
                 </div>
+
                 <?php 
-                if(isset($_GET['table'])){
+                if(isset($_GET['table']) || $_SERVER['REQUEST_METHOD'] == "POST"){
+                    if(isset($_GET['table'])){
                     $table = $_GET['table'];
-                    if($table == 'produk'){
+                    }else{
+                         $table = $_POST['table'];
+                    }
+                    if($table == 'produk'){ ?>
+                        <!-- Tambahan Tabel Pelanggan -->
+                        <h2>Data Produk</h2>
+                        <table border="1" width="100%" cellspacing="0" cellpadding="5">
+                            <thead>
+                                <tr>
+                                    <form action="" method="POST">
+                                    <input type="text" name="table" hidden value="<?php echo $table ?>">
+                                    <th><input type="text" name="idProduk" placeholder="Id Produk">
+                                    <button type="submit" name="CARI">CARI...</button></th>
+                                    </form>
+                                    <th>Nama</th>
+                                    <th>Harga</th>
+                                    <th>Merk</th>
+                                    <th>Warna</th>
+                                    <th>Stock</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                        <?php
                         foreach($allProduct as $prd){
-                            echo $prd['idProduk'];
-                            echo $prd['nama'];
-                            echo $prd['harga'];
-                            echo $prd['merk'];
-                            echo $prd['warna'];
-                            echo $prd['stock'];
+                            if($_SERVER['REQUEST_METHOD'] == "POST" && !empty($_POST['idProduk'])){
+                                if($prd['idProduk'] == $_POST['idProduk']){
+                                    cetakProduk($prd);
+                                }
+                            }else{
+                                cetakProduk($prd);
+                            }
                         }
 
-                    }elseif ($table == 'pelanggan') {
+                    }elseif ($table == 'pelanggan') { ?>
+                        <!-- Tambahan Tabel Pelanggan -->
+                        <h2>Data Pelanggan</h2>
+                        <table border="1" width="100%" cellspacing="0" cellpadding="5">
+                            <thead>
+                                <tr>
+                                    <form action="" method="POST">
+                                    <input type="text" name="table" hidden value="<?php echo $table ?>">
+                                    <th><input type="text" name="email" placeholder="Email">
+                                    <button type="submit" name="CARI">CARI...</button></th>
+                                    </form>
+                                    <th>Nama</th>
+                                    <th>Alamat</th>
+                                    <th>Nomor Telepon</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                        <?php
                         foreach($pelanggan as $plg){
-                            echo $plg['email'];
-                            echo $plg['nama'];
-                            echo $plg['alamat'];
-                            echo $plg['NoTelp'];
+                            if($_SERVER['REQUEST_METHOD'] == "POST" && !empty($_POST['email'])){
+                                if($plg['email'] == $_POST['email']){
+                                    cetakPelanggan($plg);
+                                }
+                            }else{
+                                cetakPelanggan($plg);
+                            }
                         }
-                    }elseif($table == 'transaksi'){
-                        if(isset($_GET['filter'])){
+                    }elseif($table == 'transaksi'){ ?>
+                        <!-- Tambahan Tabel Transaksi -->
+                        <h2>Data Transaksi</h2>
+                        <table border="1" width="100%" cellspacing="0" cellpadding="5">
+                            <thead>
+                                <tr>
+                                    <form action="" method="POST">
+                                    <input type="text" name="table" hidden value="<?php echo $table ?>">
+                                    <th><input type="text" name="idTransaksi" placeholder="ID Transaksi">
+                                    <button type="submit" name="CARI">CARI...</button></th>
+                                    </form>
+                                    <th>ID Produk</th>
+                                    <th>Email Pelanggan</th>
+                                    <th>Jumlah</th>
+                                    <th>Tanggal Beli</th>
+                                    <th>Status Bayar</th>
+                                    <th>Alamat Kirim</th>
+                                    <th>Status Pengiriman</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                        <?php if(isset($_GET['filter'])){
                             $filter = $_GET['filter'];
                             $status = $_GET['status'];
                             if($filter == 'pembayaran'){
                                 foreach($transaksi as $trk){
                                     if($trk['statusBayar']==$status){
-                                        echo $trk['idTransaksi'];
-                                        echo $trk['idProduk'];
-                                        echo $trk['email'];
-                                        echo $trk['jumlah'];
-                                        echo $trk['tglBeli'];
-                                        echo $trk['statusBayar'];
-                                        echo $trk['alamatKirim'];
-                                        echo $trk['statusPengiriman'];
+                                        cetakTransaksi($trk, $table);
                                     }
                                 }
                             }else{
                                 foreach($transaksi as $trk){
                                     if($trk['statusPengiriman']==$status){
-                                        echo $trk['idTransaksi'];
-                                        echo $trk['idProduk'];
-                                        echo $trk['email'];
-                                        echo $trk['jumlah'];
-                                        echo $trk['tglBeli'];
-                                        echo $trk['statusBayar'];
-                                        echo $trk['alamatKirim'];
-                                        echo $trk['statusPengiriman'];
+                                        cetakTransaksi($trk,$table);
                                     }
                                 }
                             }
                         }else{
-                            foreach($transaksi as $trk){
-                                echo $trk['idTransaksi'];
-                                echo $trk['idProduk'];
-                                echo $trk['email'];
-                                echo $trk['jumlah'];
-                                echo $trk['tglBeli'];
-                                echo $trk['statusBayar'];
-                                echo $trk['alamatKirim'];
-                                echo $trk['statusPengiriman'];
+                            foreach ($transaksi as $trk) {
+                            if($_SERVER['REQUEST_METHOD'] == "POST" && !empty($_POST['idTransaksi'])){
+                                if($trk['idTransaksi'] == $_POST['idTransaksi']){
+                                    cetakTransaksi($trk, $table);
+                                }
+                            }else{
+                                if(timeDiff($trk['tglBeli']) > 1440 && $trk['statusBayar'] == "proses"){
+                                    deleteTransaksi($conn, $trk['idTransaksi'], $trk['idProduk']);
+                                }
+                                cetakTransaksi($trk, $table);
                             }
+                        }
                         }
                     }
                 }
             ?>
+                
+                        <?php 
+                        
+                        ?>
+                    </tbody>
+                </table>
             </div>
-        </div>
-        <div>
-            
         </div>
     </div>
 </body>
