@@ -217,10 +217,12 @@
                                     <th>ID Produk</th>
                                     <th>Email Pelanggan</th>
                                     <th>Jumlah</th>
+                                    <th>Total</th>
                                     <th>Tanggal Beli</th>
                                     <th>Status Bayar</th>
                                     <th>Alamat Kirim</th>
                                     <th>Status Pengiriman</th>
+                                    <th>Tombol Submit</th>
                                 </tr>
                             </thead>
                             <tbody>

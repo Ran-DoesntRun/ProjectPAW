@@ -168,6 +168,7 @@ function cetakTransaksi($trk, $table){
     echo "<td>" . $trk['idProduk'] . "</td>";
     echo "<td>" . $trk['email'] . "</td>";
     echo "<td>" . $trk['jumlah'] . "</td>";
+    echo "<td>" . $trk['total'] . "</td>";
     echo "<td>" . $trk['tglBeli'] . "</td>";
     echo '<form action="index.php" method="POST">';          
     echo '<input type="text" name="table" hidden value="'.$table .'">';
@@ -182,8 +183,8 @@ function cetakTransaksi($trk, $table){
     echo '<option value="berhasil" '. ( $trk['statusPengiriman'] == 'berhasil' ? "SELECTED" : "" ).' >BERHASIL</option>';
     echo '<option value="proses" '. ( $trk['statusPengiriman'] == 'proses' ? "SELECTED" : "" ).' >PROSES</option>';
     echo '</select>';
-    echo '<button type="submit" name="SUBMIT">SUBMIT</button>';
-    echo '</td></form>';
+    echo '</td>';
+    echo '<td> <button type="submit" name="SUBMIT">SUBMIT</button></td> </form>';
     echo "</tr>";
 }
 
