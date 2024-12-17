@@ -149,7 +149,10 @@ function cetakProduk($prd){
     echo "<td>" . $prd['harga'] . "</td>";
     echo "<td>" . $prd['merk'] . "</td>";
     echo "<td>" . $prd['warna'] . "</td>";
-    echo "<td>" . $prd['stock'] . "</td>";
+    echo '<form action="index.php" method="POST">';
+    echo '<input type="text" name="idProduk" value="'.$prd['idProduk'].'" hidden>';
+    echo '<td> <input type="number" name="stock" value="'.$prd['stock'].'">';
+    echo '<button type="submit" name="SUBMIT">SUBMIT</button></td> </form>';
     echo "</tr>";
 }
 
@@ -209,19 +212,23 @@ function timeDiff($start_date) {
     return $difference_in_minutes;
 }
 
-function editStock($conn, $id){
+function editStock($conn, $id, $perubahan){
     $data = tampilByIdProduk($conn, $id);
-    $new_stock = ($data['stock'] + 1);
+    $new_stock = ($data['stock'] + $perubahan);
     $sql = "UPDATE produk SET stock = '$new_stock'  WHERE idProduk = $id";
     
-    $conn -> query($sql);
+    if($conn -> query($sql) === TRUE){
+        return True;
+    }else{
+        return False;
+    }
 }
 
-function deleteTransaksi($conn, $id, $idProduk){
+function deleteTransaksi($conn, $id, $idProduk, $jumlah){
     $sql = "DELETE FROM transaksi WHERE idTransaksi = $id";
 
     if ($conn->query($sql) === TRUE) {
-        editStock($conn, $idProduk);
+        $dummy = editStock($conn, $idProduk, $jumlah);
             return $id;
         } else {
             return $conn->error;

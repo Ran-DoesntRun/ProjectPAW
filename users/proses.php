@@ -76,14 +76,27 @@ function beli($conn, $id, $email, $jumlah, $alamatKirim){
     
     if ($conn->query($sql) === TRUE) {
         $last_id = $conn->insert_id;
+        $dummy = editStock($conn, $id, $jumlah);
         return $last_id;
     } else {
         return False;
     }
 }
 
+function editStock($conn, $id, $jumlah){
+    $data = tampilByIdProduk($conn, $id);
+    $new_stock = ($data['stock'] - $jumlah);
+    $sql = "UPDATE produk SET stock = '$new_stock'  WHERE idProduk = $id";
+    
+    if($conn -> query($sql) === TRUE){
+        return True;
+    }else{
+        return False;
+    }
+}
+
 function pencarian_PRODUK($conn, $filter, $dicari){
-    $sql = "SELECT * FROM produk WHERE $filter LIKE '%$dicari%'";
+    $sql = "SELECT * FROM produk WHERE $filter LIKE '%$dicari%' ORDER BY stock DESC";
 
     $result = $conn -> query($sql);
 
@@ -101,8 +114,15 @@ function pencarian_TRANSAKSI($conn, $dicari){
     $sql = "SELECT * FROM transaksi WHERE idTransaksi = '$dicari'";
 
     $result = $conn -> query($sql);
+    
+    $plg = [];
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $plg[] = $row;
+        }
+    }
 
-    return $result->fetch_assoc();
+    return $plg;
 }
 
 function batas($tgl){

@@ -42,15 +42,23 @@
         }
     }
 
-    if($_SERVER['REQUEST_METHOD']=="POST" && isset($_POST['statusBayar'])){
+    if($_SERVER['REQUEST_METHOD']=="POST"){
+        if(isset($_POST['statusBayar'])){
         $idt = $_POST['idTransaksi'];
-        echo $_POST['statusBayar'];
-        $data = tampil_transaksi_by_idTransaksi($conn, $idt);
         $hasilEdit = editTransaksi($conn, $idt, $_POST['statusBayar'], $_POST['statusPengiriman']);
         if($hasilEdit == True){
             header('location: index.php?table=transaksi&idTransaksi='.$idt);
         }else{
             echo $hasilEdit;
+        }}
+        elseif(isset($_POST['stock'])){
+        $idp = $_POST['idProduk'];
+        $hasilEdit = editStock($conn, $idp, $_POST['stock']);
+        if($hasilEdit == True){
+            header('location: index.php?table=produk&idProduk'.$idp);
+        }else{
+            echo $hasilEdit;
+        }
         }
     }
     ?>
@@ -152,7 +160,7 @@
                         <table border="1" width="100%" cellspacing="0" cellpadding="5">
                             <thead>
                                 <tr>
-                                    <form action="" method="POST">
+                                    <form action="" method="GET">
                                     <input type="text" name="table" hidden value="<?php echo $table ?>">
                                     <th><input type="text" name="idProduk" placeholder="Id Produk">
                                     <button type="submit" name="CARI">CARI...</button></th>
@@ -167,8 +175,8 @@
                             <tbody>
                         <?php
                         foreach($allProduct as $prd){
-                            if($_SERVER['REQUEST_METHOD'] == "POST" && !empty($_POST['idProduk'])){
-                                if($prd['idProduk'] == $_POST['idProduk']){
+                            if($_SERVER['REQUEST_METHOD'] == "GET" && !empty($_GET['idProduk'])){
+                                if($prd['idProduk'] == $_GET['idProduk']){
                                     cetakProduk($prd);
                                 }
                             }else{
@@ -250,7 +258,7 @@
                                 }
                             }else{
                                 if(timeDiff($trk['tglBeli']) > 1440 && $trk['statusBayar'] == "proses"){
-                                    deleteTransaksi($conn, $trk['idTransaksi'], $trk['idProduk']);
+                                    deleteTransaksi($conn, $trk['idTransaksi'], $trk['idProduk'], $trk['jumlah']);
                                 }
                                 cetakTransaksi($trk, $table);
                             }

@@ -314,6 +314,35 @@ footer {
     margin: 5px 0;
 }
 
+.payment-info {
+    text-align: center;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #333;
+    border-radius: 8px;
+    line-height: 1.6;
+    color: #fff;
+}
+
+.payment-info h3, .payment-info h4, .payment-info p {
+    margin-bottom: 10px;
+}
+
+.payment-info h3 {
+    font-size: 1.2em;
+    color: orange;
+}
+
+.payment-info h4 {
+    font-size: 1.1em;
+    font-weight: normal;
+}
+
+.payment-info strong {
+    color: orange;
+}
+
+
 .purchase-form {
     display: flex;
     flex-direction: column;

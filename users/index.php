@@ -63,8 +63,8 @@ if($_SERVER['REQUEST_METHOD']=="POST"){
     <main>
         <div class="product-grid">
             <?php
-            if (count($produk) > 0): 
-            foreach ($produk as $item): ?>
+            if (count($produk) > 0){
+            foreach ($produk as $item){ ?>
             <div class="product">
                 <img src="<?php echo $item['foto']; ?>" alt="<?php echo $item['nama']; ?>">
                 <p>
@@ -73,14 +73,18 @@ if($_SERVER['REQUEST_METHOD']=="POST"){
                 <p class="price">
                     <?php echo number_format($item['harga'], 0, ',', '.'); ?>
                 </p>
+                <?php if($item['stock'] > 0){ ?>
                 <a href="buy.php?product=<?php echo $item['idProduk']; ?>" class="buy-button">Beli Sekarang</a>
+                <?php }else{ ?>
+                    <p>Stock Produk Telah Habis</p>
+                <?php } ?>
             </div>
-            <?php endforeach; ?>
-            <?php else: ?>
+            <?php }
+            }else{ ?>
             <div class="product">
                 <p>Tidak ada data produk.</p>
             </div>
-            <?php endif; ?>
+            <?php } ?>
         </div>
     </main>
 

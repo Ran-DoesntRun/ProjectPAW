@@ -19,7 +19,7 @@
         $email = ($_SESSION['user']);
         $dataTransaksi = tampil_transaksi_by_email($conn, $email);
 
-        if($_SERVER['REQUEST_METHOD']=="POST" && $_POST['dicari'] != ""){
+        if($_SERVER['REQUEST_METHOD']=="POST" && !empty($_POST['dicari'])){
             $dicari = $_POST['dicari'];
             $dataTransaksi = pencarian_TRANSAKSI($conn, $dicari);
         }
@@ -34,8 +34,8 @@
         </div>
     <?php 
         foreach ($dataTransaksi as $data){    
-            $id = $data['idProduk'];
-            $dataProduk = tampilByIdProduk($conn, $id);
+            $idP = $data['idProduk'];
+            $dataProduk = tampilByIdProduk($conn, $idP);
             ?>
         <div class="order-card">
             <div class="order-item">
@@ -57,6 +57,9 @@
                 <p>Total Pesanan: 
                 <?php echo number_format($dataProduk['harga'] * $data['jumlah'], 0, ',', '.'); ?>
                 </p>
+                <?php if($data['statusBayar']=='proses'){ ?>
+                <a href="success.php?idTransaksi=<?php echo $data['idTransaksi']?>">PEMBAYARAN</a>
+                <?php } ?>
             </div>
         </div>
         <?php }
