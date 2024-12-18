@@ -4,12 +4,109 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Form Produk</title>
-    <link rel="stylesheet" href="style.css">
     <script>
         function movepage() {
             window.location.href = "index.php";
         }
     </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .product-form h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .form-group {
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 1rem;
+            color: #555;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus {
+            border-color: #007bff;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .submit-btn.kembali {
+            background-color: #f44336;
+            margin-top: 10px;
+        }
+
+        .submit-btn.kembali:hover {
+            background-color: #d32f2f;
+        }
+
+        @media (max-width: 600px) {
+            .product-form h1 {
+                font-size: 1.5rem;
+            }
+
+            .submit-btn {
+                font-size: 1rem;
+            }
+        }
+    </style>
 </head>
 <body>
     <?php 
@@ -41,7 +138,6 @@
         }
     }
     ?>
-    <div class="form-container">
     <div class="container">
         <div class="product-form">
             <h1>Form Produk</h1>
@@ -78,7 +174,6 @@
             </form>
             <button type="button" class="submit-btn kembali" onclick="movepage()">Kembali</button>
         </div>
-    </div>
     </div>
 </body>
 </html>

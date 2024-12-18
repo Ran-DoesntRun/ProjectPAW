@@ -4,7 +4,243 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        /* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body and Layout */
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    height: 100vh;
+    background-color:rgb(172, 172, 172);
+}
+
+/* Sidebar Styles */
+.sidebar {
+    width: 250px;
+    background-color: #2c3e50;
+    color: #fff;
+    padding: 20px;
+    height: 100vh;
+    position: fixed;
+}
+
+.sidebar .logo {
+    text-align: center;
+}
+
+.sidebar .logo img {
+    width: 80px;
+    border-radius: 50%;
+}
+
+.sidebar .logo h2 {
+    margin-top: 10px;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.sidebar .nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar .nav ul li {
+    margin: 20px 0;
+}
+    
+.sidebar .nav ul li a {
+        color: white;
+    }
+
+a {
+    color: black;
+    text-decoration: none;
+    font-size: 18px;
+    display: block;
+    padding: 10px;
+    transition: background-color 0.3s;
+}
+
+.sidebar .nav ul li a:hover {
+    background-color: #34495e;
+}
+
+/* Main Content Area */
+.main-content {
+    margin-left: 250px;
+    padding: 20px;
+    width: 100%;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+/* Header Section */
+.header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.search-bar input {
+    padding: 10px;
+    font-size: 16px;
+    width: 300px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.search-bar button {
+    padding: 10px 15px;
+    background-color: #3498db;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-left: 10px;
+}
+
+.search-bar button:hover {
+    background-color: #2980b9;
+}
+
+.user-info p {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* Dashboard Stats Section */
+.dashboard {
+    margin-bottom: 30px;
+}
+
+.dashboard h1 {
+    font-size: 30px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.card {
+    background-color: #ecf0f1;
+    padding: 20px;
+    border-radius: 10px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card h2 {
+    font-size: 36px;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.card p {
+    font-size: 18px;
+    color: #7f8c8d;
+}
+
+/* Additional Card Styling for Status */
+.anotherbg {
+    background-color: #f39c12;
+    color: #fff;
+}
+
+.anotherbg:hover {
+    background-color: #e67e22;
+}
+
+/* Table Styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+th {
+    background-color:rgb(30, 34, 37);
+    color: white;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+tbody tr:hover {
+    background-color: #34495e;
+}
+
+/* Form Input and Button Styles */
+input[type="text"] {
+    padding: 8px;
+    width: 250px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+button[type="submit"] {
+    padding: 8px 15px;
+    background-color:rgb(32, 32, 32);
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-left: 10px;
+}
+
+button[type="submit"]:hover {
+    background-color:rgb(81, 81, 81);
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    body {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        padding: 10px;
+    }
+
+    .main-content {
+        margin-left: 0;
+    }
+
+    .stats {
+        flex-direction: column;
+    }
+
+    .card {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    a:active, a:hover, a:visited, a:link{
+        text-decoration: none;
+    }
+
+    a:hover{
+        background-color: #34495e;
+    }
+}
+
+    </style>
 </head>
 
 <body>
@@ -62,7 +298,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 }
 ?>
 
-    <div>
+    <div class="container">
         <!-- Sidebar -->
         <div class="sidebar">
             <div class="logo">
@@ -79,73 +315,84 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
         <!-- Main Content -->
         <div class="main-content">
-            <div class="header">
-                <div class="user-info">
-                    <p>Hi, Administrator!</p>
-                </div>
-            </div>
+            
+        <h1>Halaman Dashboard</h1>
 
-            <div class="dashboard">
-                <h1>Halaman Dashboard</h1>
-                <div class="stats">
-                    <a href="index.php?table=produk">
-                        <div class="card anotherbg">
-                            <p>Jumlah Produk</p>
-                            <h2><?php echo $jumlahAllProduct; ?></h2>
-                        </div>
-                    </a>
-                    <a href="index.php?table=transaksi">
-                        <div class="card anotherbg">
-                            <p>Jumlah Transaksi</p>
-                            <h2><?php echo $jumlahTransaksi; ?></h2>
-                        </div>
-                    </a>
-                    <a href="index.php?table=pelanggan">
-                        <div class="card anotherbg">
-                            <p>Jumlah Pelanggan</p>
-                            <h2><?php echo $jumlahPelanggan; ?></h2>
-                        </div>
-                    </a>
-                </div>
+<!-- Tabel Jumlah Produk, Transaksi, dan Pelanggan -->
+<table border="1" cellpadding="10" cellspacing="0" style="width: 100%; text-align: center; border-collapse: collapse;">
+    <thead>
+        <tr>
+            <th>Data</th>
+            <th>Jumlah</th>
+            <th>Aksi</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Jumlah Produk</td>
+            <td><?php echo $jumlahAllProduct; ?></td>
+            <td><a href="index.php?table=produk">Lihat Detail</a></td>
+        </tr>
+        <tr>
+            <td>Jumlah Transaksi</td>
+            <td><?php echo $jumlahTransaksi; ?></td>
+            <td><a href="index.php?table=transaksi">Lihat Detail</a></td>
+        </tr>
+        <tr>
+            <td>Jumlah Pelanggan</td>
+            <td><?php echo $jumlahPelanggan; ?></td>
+            <td><a href="index.php?table=pelanggan">Lihat Detail</a></td>
+        </tr>
+    </tbody>
+</table>
 
-                <!-- Transaksi Payment and Shipping Status -->
-                <h2>Jumlah Transaksi Berdasarkan Status Pembayaran</h2>
-                <div class="stats">
-                    <a href="index.php?table=transaksi&filter=pembayaran&status=berhasil">
-                        <div class="card anotherbg">
-                            <p>Berhasil</p>
-                            <h2><?php echo $jumlahTransaksiBerhasilBayar; ?></h2>
-                        </div>
-                    </a>
-                    <a href="index.php?table=transaksi&filter=pembayaran&status=proses">
-                        <div class="card anotherbg">
-                            <p>Proses</p>
-                            <h2><?php echo $jumlahTransaksiProsesBayar; ?></h2>
-                        </div>
-                    </a>
-                </div>
+<!-- Tabel Transaksi Berdasarkan Status Pembayaran -->
+<h2>Jumlah Transaksi Berdasarkan Status Pembayaran</h2>
+<table border="1" cellpadding="10" cellspacing="0" style="width: 100%; text-align: center; border-collapse: collapse;">
+    <thead>
+        <tr>
+            <th>Status Pembayaran</th>
+            <th>Jumlah</th>
+            <th>Aksi</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Berhasil</td>
+            <td><?php echo $jumlahTransaksiBerhasilBayar; ?></td>
+            <td><a href="index.php?table=transaksi&filter=pembayaran&status=berhasil">Lihat Detail</a></td>
+        </tr>
+        <tr>
+            <td>Proses</td>
+            <td><?php echo $jumlahTransaksiProsesBayar; ?></td>
+            <td><a href="index.php?table=transaksi&filter=pembayaran&status=proses">Lihat Detail</a></td>
+        </tr>
+    </tbody>
+</table>
 
-                <h2>Jumlah Transaksi Berdasarkan Status Pengiriman</h2>
-                <div class="stats">
-                    <a href="index.php?table=transaksi&filter=pengiriman&status=berhasil">
-                        <div class="card anotherbg">
-                            <p>Berhasil</p>
-                            <h2><?php echo $jumlahTransaksiBerhasilKirim; ?></h2>
-                        </div>
-                    </a>
-                    <a href="index.php?table=transaksi&filter=pengiriman&status=proses">
-                        <div class="card anotherbg">
-                            <p>Proses</p>
-                            <h2><?php echo $jumlahTransaksiProsesKirim; ?></h2>
-                        </div>
-                    </a>
-                    <a href="index.php?table=transaksi&filter=pengiriman&status=gagal">
-                        <div class="card anotherbg">
-                            <p>Gagal</p>
-                            <h2><?php echo $jumlahTransaksiGagalKirim; ?></h2>
-                        </div>
-                    </a>
-                </div>
+<!-- Tabel Transaksi Berdasarkan Status Pengiriman -->
+<h2>Jumlah Transaksi Berdasarkan Status Pengiriman</h2>
+<table border="1" cellpadding="10" cellspacing="0" style="width: 100%; text-align: center; border-collapse: collapse;">
+    <thead>
+        <tr>
+            <th>Status Pengiriman</th>
+            <th>Jumlah</th>
+            <th>Aksi</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Berhasil</td>
+            <td><?php echo $jumlahTransaksiBerhasilKirim; ?></td>
+            <td><a href="index.php?table=transaksi&filter=pengiriman&status=berhasil">Lihat Detail</a></td>
+        </tr>
+        <tr>
+            <td>Proses</td>
+            <td><?php echo $jumlahTransaksiProsesKirim; ?></td>
+            <td><a href="index.php?table=transaksi&filter=pengiriman&status=proses">Lihat Detail</a></td>
+        </tr>
+    </tbody>
+</table>
 
                 <!-- Dynamic Content Based on Table -->
                 <?php
@@ -169,7 +416,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                                     <th>Stock</th>
                                 </tr>
                             </thead>
-                            <>
                                 <?php foreach ($allProduct as $prd) {
                                     if ($_SERVER['REQUEST_METHOD'] == "GET" && !empty($_GET['idProduk'])) {
                                         if ($prd['idProduk'] == $_GET['idProduk']) {

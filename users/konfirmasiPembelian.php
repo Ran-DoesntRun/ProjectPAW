@@ -32,7 +32,7 @@
             $dataPelanggan = tampilPelanggan($conn, $email);
 
             
-            
+            if($jumlah <= $dataProduk['stock']){
             if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['password'])){
                 $password = $_POST['password'];
                 if($password == $dataPelanggan['password']){
@@ -52,6 +52,11 @@
                     window.location.href = 'buy.php?product=".$id."';
                     </script>";
                 }
+            }
+            }else{
+                echo "<script type='text/javascript'> window.alert('Jumlah Produk Dibeli Melebihi Stock') 
+                    window.location.href = 'buy.php?product=".$id."';
+                    </script>";
             }
             $totalHarga = number_format($dataProduk['harga'] * $jumlah, 0, ',', '.');
         ?>

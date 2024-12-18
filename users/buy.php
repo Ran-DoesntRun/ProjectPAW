@@ -17,7 +17,6 @@
       }
 
     $email = $_SESSION['user'];
-    echo $_SESSION['user'];
     
     $id  = $_GET['product'];
     $dataProduk = tampilByIdProduk($conn, $id);

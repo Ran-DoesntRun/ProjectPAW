@@ -26,7 +26,7 @@ header {
 }
 
 .logo h1 {
-    color: orange;
+    color: white;
 }
 
 
@@ -38,6 +38,7 @@ header {
     cursor: pointer;
     border-radius: 5px;
 }
+
 
 .banner {
     display: flex;

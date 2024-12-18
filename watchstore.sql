@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 16, 2024 at 05:42 PM
+-- Generation Time: Dec 16, 2024 at 07:19 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -81,7 +81,7 @@ CREATE TABLE `produk` (
 --
 
 INSERT INTO `produk` (`idProduk`, `nama`, `harga`, `merk`, `warna`, `stock`, `foto`) VALUES
-(1, 'Casio Mens Black Analog Watch MTP-VT01L-1B', 477000, 'Casio', 'Hitam', 14, '../product_pict/Casio Mens Black Analog Watch MTP-VT01L-1B (Size_ US Free).jpg'),
+(1, 'Casio Mens Black Analog Watch MTP-VT01L-1B', 477000, 'Casio', 'Hitam', 13, '../product_pict/Casio Mens Black Analog Watch MTP-VT01L-1B (Size_ US Free).jpg'),
 (3, 'Fossil FB-01 FS5657 Black Dial Stainless Steel Str', 1608000, 'Fossil', 'Silver', 10, '../product_pict/1l.webp');
 
 -- --------------------------------------------------------
@@ -95,19 +95,32 @@ CREATE TABLE `transaksi` (
   `email` varchar(30) NOT NULL,
   `jumlah` int(4) NOT NULL,
   `tglBeli` datetime NOT NULL,
-  `statusBayar` enum('berhasil','proses') NOT NULL,
+  `statusBayar` enum('gagal','berhasil','proses') NOT NULL,
   `alamatKirim` varchar(255) NOT NULL,
   `idProduk` int(11) DEFAULT NULL,
-  `statusPengiriman` enum('berhasil','proses') NOT NULL,
-  `total` int(10) NOT NULL
+  `statusPengiriman` enum('berhasil','gagal','proses') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `transaksi`
 --
 
-INSERT INTO `transaksi` (`idTransaksi`, `email`, `jumlah`, `tglBeli`, `statusBayar`, `alamatKirim`, `idProduk`, `statusPengiriman`, `total`) VALUES
-(21, 'email2@email.com', 3, '2024-12-16 23:12:44', 'berhasil', 'Ugm', 3, 'proses', 4824000);
+INSERT INTO `transaksi` (`idTransaksi`, `email`, `jumlah`, `tglBeli`, `statusBayar`, `alamatKirim`, `idProduk`, `statusPengiriman`) VALUES
+(1, 'email2@email.com', 3, '2024-12-11 00:00:00', 'proses', 'ugm', 1, 'proses'),
+(2, 'email2@email.com', 0, '2024-12-10 00:00:00', 'proses', '', 1, 'proses'),
+(6, 'email2@email.com', 2, '2024-12-10 00:00:00', 'proses', 'Ugm', 1, 'proses'),
+(7, 'email2@email.com', 5, '2024-12-11 00:00:00', 'proses', 'Ugm', 1, 'proses'),
+(8, 'email2@email.com', 2, '2024-12-16 00:00:00', 'proses', 'Ugm', 3, 'proses'),
+(9, 'email2@email.com', 3, '2024-12-16 00:00:00', 'proses', 'Ugm', 3, 'proses'),
+(10, 'email2@email.com', 3, '2024-12-16 00:00:00', 'proses', 'Ugm', 3, 'proses'),
+(11, 'email2@email.com', 6, '2024-12-16 00:00:00', 'proses', 'Ugm', 3, 'proses'),
+(12, 'email2@email.com', 1, '2024-12-16 00:00:00', 'proses', 'Ugm', 3, 'proses'),
+(13, 'email2@email.com', 8, '2024-12-16 00:00:00', 'proses', 'Ugm', 3, 'proses'),
+(14, 'email2@email.com', 2, '2024-12-16 00:00:00', 'proses', 'Ugm', 3, 'proses'),
+(15, 'email2@email.com', 2, '2024-12-16 00:00:00', 'proses', 'Ugm', 3, 'proses'),
+(16, 'email2@email.com', 2, '2024-12-16 00:00:00', 'proses', 'Ugm', 3, 'proses'),
+(17, 'email2@email.com', 5, '2024-12-16 06:57:18', 'proses', 'Ugm', 1, 'proses'),
+(18, 'email2@email.com', 7, '2024-12-16 13:03:06', 'proses', 'Ugm', 1, 'proses');
 
 --
 -- Indexes for dumped tables
@@ -153,7 +166,7 @@ ALTER TABLE `produk`
 -- AUTO_INCREMENT for table `transaksi`
 --
 ALTER TABLE `transaksi`
-  MODIFY `idTransaksi` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `idTransaksi` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- Constraints for dumped tables
