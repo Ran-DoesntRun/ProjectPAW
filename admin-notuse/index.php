@@ -1,72 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
-<?php
-include "hal_proses.php";  // Include the file where functions are defined
-session_start();
+    <?php
+    include "hal_proses.php";
 
-if (!isset($_SESSION['admin'])) {
-    header("Location: login.php");
-    exit;
-}
+    session_start();
 
-// Fetch product, transaction, and customer data
-$allProduct = tampil_produk($conn);
-$transaksi = tampil_transaksi($conn);
-$pelanggan = tampil_pelanggan($conn);
-$jumlahAllProduct = count($allProduct);
-$jumlahTransaksi = count($transaksi);
-$jumlahPelanggan = count($pelanggan);
+    if (!isset($_SESSION['admin'])) {
+        header("Location: login.php");
+        exit;
+    }
+    
 
-// Initialize counters for transaction statuses
-$jumlahTransaksiBerhasilBayar = $jumlahTransaksiProsesBayar = $jumlahTransaksiGagalBayar = 
-$jumlahTransaksiBerhasilKirim = $jumlahTransaksiProsesKirim = $jumlahTransaksiGagalKirim = 0;
-
-// Loop through transactions and count status occurrences
-foreach ($transaksi as $data) {
-    if ($data['statusBayar'] == "berhasil") $jumlahTransaksiBerhasilBayar++;
-    elseif ($data['statusBayar'] == "proses") $jumlahTransaksiProsesBayar++;
-    else $jumlahTransaksiGagalBayar++;
-
-    if ($data['statusPengiriman'] == "berhasil") $jumlahTransaksiBerhasilKirim++;
-    elseif ($data['statusPengiriman'] == "proses") $jumlahTransaksiProsesKirim++;
-    else $jumlahTransaksiGagalKirim++;
-}
-
-// Handle POST requests for updating transactions or product stock
-if ($_SERVER['REQUEST_METHOD'] == "POST") {
-    if (isset($_POST['statusBayar'])) {
-        $idt = $_POST['idTransaksi'];
-        $hasilEdit = editTransaksi($conn, $idt, $_POST['statusBayar'], $_POST['statusPengiriman']);
-        if ($hasilEdit == true) {
-            header('location: index.php?table=transaksi&idTransaksi=' . $idt);
-        } else {
-            echo $hasilEdit;
+    $allProduct = tampil_produk($conn);
+    $transaksi = tampil_transaksi($conn);
+    $pelanggan = tampil_pelanggan($conn);
+    $jumlahAllProduct = count($allProduct);
+    $jumlahTransaksi = count($transaksi);
+    $jumlahPelanggan = count($pelanggan);
+    $jumlahTransaksiBerhasilBayar = $jumlahTransaksiProsesBayar = $jumlahTransaksiGagalBayar = 
+    $jumlahTransaksiBerhasilKirim = $jumlahTransaksiProsesKirim = $jumlahTransaksiGagalKirim = 0;
+    foreach ($transaksi as $data) {
+        if ($data['statusBayar'] == "berhasil") $jumlahTransaksiBerhasilBayar += 1;
+        elseif ($data['statusBayar'] == "proses") $jumlahTransaksiProsesBayar += 1;
+        else {
+            $jumlahTransaksiGagalBayar += 1;
         }
-    } elseif (isset($_POST['stock'])) {
-        $idp = $_POST['idProduk'];
-        $hasilEdit = editStock($conn, $idp, $_POST['stock']);
-        if ($hasilEdit == true) {
-            header('location: index.php?table=produk&idProduk=' . $idp);
-        } else {
-            echo $hasilEdit;
+
+        if ($data['statusPengiriman'] == "berhasil") $jumlahTransaksiBerhasilKirim += 1;
+        elseif ($data['statusPengiriman'] == "proses") $jumlahTransaksiProsesKirim += 1;
+        else {
+            $jumlahTransaksiGagalKirim += 1;
         }
     }
-}
-?>
 
-    <div>
+    if($_SERVER['REQUEST_METHOD']=="POST"){
+        if(isset($_POST['statusBayar'])){
+        $idt = $_POST['idTransaksi'];
+        $hasilEdit = editTransaksi($conn, $idt, $_POST['statusBayar'], $_POST['statusPengiriman']);
+        if($hasilEdit == True){
+            header('location: index.php?table=transaksi&idTransaksi='.$idt);
+        }else{
+            echo $hasilEdit;
+        }}
+        elseif(isset($_POST['stock'])){
+        $idp = $_POST['idProduk'];
+        $hasilEdit = editStock($conn, $idp, $_POST['stock']);
+        if($hasilEdit == True){
+            header('location: index.php?table=produk&idProduk'.$idp);
+        }else{
+            echo $hasilEdit;
+        }
+        }
+    }
+    ?>
+    <div class="container">
         <!-- Sidebar -->
         <div class="sidebar">
             <div class="logo">
-            
+                <img src="profile.png" alt="Logo" class="logo-img">
                 <h2>WatchStore</h2>
             </div>
             <div class="nav">
@@ -80,11 +80,14 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         <!-- Main Content -->
         <div class="main-content">
             <div class="header">
+                <div class="search-bar">
+                    <input type="text" placeholder="Cari...">
+                    <button>Cari</button>
+                </div>
                 <div class="user-info">
                     <p>Hi, Administrator!</p>
                 </div>
             </div>
-
             <div class="dashboard">
                 <h1>Halaman Dashboard</h1>
                 <div class="stats">
@@ -107,8 +110,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                         </div>
                     </a>
                 </div>
-
-                <!-- Transaksi Payment and Shipping Status -->
                 <h2>Jumlah Transaksi Berdasarkan Status Pembayaran</h2>
                 <div class="stats">
                     <a href="index.php?table=transaksi&filter=pembayaran&status=berhasil">
@@ -124,7 +125,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                         </div>
                     </a>
                 </div>
-
                 <h2>Jumlah Transaksi Berdasarkan Status Pengiriman</h2>
                 <div class="stats">
                     <a href="index.php?table=transaksi&filter=pengiriman&status=berhasil">
@@ -147,20 +147,23 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                     </a>
                 </div>
 
-                <!-- Dynamic Content Based on Table -->
-                <?php
-                if (isset($_GET['table'])) {
+                <?php 
+                if(isset($_GET['table']) || $_SERVER['REQUEST_METHOD'] == "POST"){
+                    if(isset($_GET['table'])){
                     $table = $_GET['table'];
-
-                    if ($table == 'produk') { ?>
+                    }else{
+                         $table = $_POST['table'];
+                    }
+                    if($table == 'produk'){ ?>
+                        <!-- Tambahan Tabel Pelanggan -->
                         <h2>Data Produk</h2>
                         <table border="1" width="100%" cellspacing="0" cellpadding="5">
                             <thead>
                                 <tr>
                                     <form action="" method="GET">
-                                        <input type="text" name="table" hidden value="<?php echo $table ?>">
-                                        <th><input type="text" name="idProduk" placeholder="Id Produk">
-                                        <button type="submit" name="CARI">CARI...</button></th>
+                                    <input type="text" name="table" hidden value="<?php echo $table ?>">
+                                    <th><input type="text" name="idProduk" placeholder="Id Produk">
+                                    <button type="submit" name="CARI">CARI...</button></th>
                                     </form>
                                     <th>Nama</th>
                                     <th>Harga</th>
@@ -169,20 +172,19 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                                     <th>Stock</th>
                                 </tr>
                             </thead>
-                            <>
-                                <?php foreach ($allProduct as $prd) {
-                                    if ($_SERVER['REQUEST_METHOD'] == "GET" && !empty($_GET['idProduk'])) {
-                                        if ($prd['idProduk'] == $_GET['idProduk']) {
-                                            cetakProduk($prd);
-                                        }
-                                    } else {
-                                        cetakProduk($prd);
-                                    }
-                                } ?>
-                            
-                            </tbody>
-                        </table>
-                    <?php }elseif ($table == 'pelanggan') { ?>
+                            <tbody>
+                        <?php
+                        foreach($allProduct as $prd){
+                            if($_SERVER['REQUEST_METHOD'] == "GET" && !empty($_GET['idProduk'])){
+                                if($prd['idProduk'] == $_GET['idProduk']){
+                                    cetakProduk($prd);
+                                }
+                            }else{
+                                cetakProduk($prd);
+                            }
+                        }
+
+                    }elseif ($table == 'pelanggan') { ?>
                         <!-- Tambahan Tabel Pelanggan -->
                         <h2>Data Pelanggan</h2>
                         <table border="1" width="100%" cellspacing="0" cellpadding="5">
@@ -277,4 +279,3 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 </body>
 
 </html>
-               

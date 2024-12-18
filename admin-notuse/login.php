@@ -25,8 +25,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Admin</title>
     <link rel="stylesheet" href="lore.css">
-    <!-- Font Awesome untuk ikon -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <div class="container">
@@ -34,22 +32,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <form action="login.php" method="POST">
             <div class="form-group">
                 <label for="username">Username</label>
-                <div class="input-container">
-                    <i class="fas fa-user"></i>
-                    <input type="text" id="username" name="username" placeholder="Masukkan username" required>
-                </div>
+                <input type="text" id="username" name="username" required>
             </div>
             <div class="form-group">
                 <label for="password">Password</label>
-                <div class="input-container">
-                    <i class="fas fa-lock"></i>
-                    <input type="password" id="password" name="password" placeholder="Masukkan password" required>
-                </div>
+                <input type="password" id="password" name="password" required>
             </div>
             <button type="submit" class="submit-btn">Login</button>
         </form>
-        <p>Belum memiliki akun? <a href="register.php" class="link">Daftar di sini</a></p>
+        <p>Belum memiliki akun? <a href="register.php">Daftar di sini</a></p>
     </div>
 </body>
 </html>
-
