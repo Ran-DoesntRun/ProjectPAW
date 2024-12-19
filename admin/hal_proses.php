@@ -89,32 +89,6 @@ function tampil_transaksi($conn){
     return $transaksi;
 }
 
-function tampil_transaksi_status_pengiriman($conn, $status){
-    $sql = "SELECT * FROM transaksi WHERE statusPengiriman = '$status'";
-    $result = $conn->query($sql);
-
-    $transaksi = [];
-    if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            $transaksi[] = $row;
-        }
-    }
-    return $transaksi;
-}
-
-function tampil_transaksi_status_pembayaran($conn, $status){
-    $sql = "SELECT * FROM transaksi WHERE statusBayar = '$status'";
-    $result = $conn->query($sql);
-
-    $transaksi = [];
-    if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            $transaksi[] = $row;
-        }
-    }
-    return $transaksi;
-}
-
 function tampil_transaksi_by_email($conn, $email){
     $sql = "SELECT * FROM transaksi WHERE email = '$email'";
     $result = $conn->query($sql);
@@ -126,13 +100,6 @@ function tampil_transaksi_by_email($conn, $email){
         }
     }
     return $transaksi;
-}
-
-function tampil_transaksi_by_idTransaksi($conn, $id){
-    $sql = "SELECT * FROM transaksi WHERE idTransaksi = '$id'";
-    $result = $conn->query($sql);
-
-    return $result->fetch_assoc();
 }
 
 function tampilByIdProduk($conn, $id){
@@ -212,9 +179,13 @@ function timeDiff($start_date) {
     return $difference_in_minutes;
 }
 
-function editStock($conn, $id, $perubahan){
+function editStock($conn, $id, $perubahan, $filter){
     $data = tampilByIdProduk($conn, $id);
+    if($filter == 'hapus'){
     $new_stock = ($data['stock'] + $perubahan);
+    }else{
+    $new_stock = $perubahan;
+    }
     $sql = "UPDATE produk SET stock = '$new_stock'  WHERE idProduk = $id";
     
     if($conn -> query($sql) === TRUE){
@@ -228,7 +199,7 @@ function deleteTransaksi($conn, $id, $idProduk, $jumlah){
     $sql = "DELETE FROM transaksi WHERE idTransaksi = $id";
 
     if ($conn->query($sql) === TRUE) {
-        $dummy = editStock($conn, $idProduk, $jumlah);
+        $dummy = editStock($conn, $idProduk, $jumlah, 'hapus');
             return $id;
         } else {
             return $conn->error;

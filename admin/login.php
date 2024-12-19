@@ -33,10 +33,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <h2>Login Admin</h2>
         <form action="login.php" method="POST">
             <div class="form-group">
-                <label for="username">Username</label>
+                <label for="username">Email</label>
                 <div class="input-container">
                     <i class="fas fa-user"></i>
-                    <input type="text" id="username" name="username" placeholder="Masukkan username" required>
+                    <input type="email" id="username" name="username" placeholder="Masukkan username" required>
                 </div>
             </div>
             <div class="form-group">

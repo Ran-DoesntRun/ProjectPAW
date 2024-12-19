@@ -288,7 +288,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         }
     } elseif (isset($_POST['stock'])) {
         $idp = $_POST['idProduk'];
-        $hasilEdit = editStock($conn, $idp, $_POST['stock']);
+        $hasilEdit = editStock($conn, $idp, $_POST['stock'], 'ubah');
         if ($hasilEdit == true) {
             header('location: index.php?table=produk&idProduk=' . $idp);
         } else {
@@ -457,6 +457,13 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                         }
                     }elseif($table == 'transaksi'){ ?>
                         <!-- Tambahan Tabel Transaksi -->
+                        <?php 
+                        foreach ($transaksi as $trk){
+                         if(timeDiff($trk['tglBeli']) > 1440 && $trk['statusBayar'] == "proses"){
+                            deleteTransaksi($conn, $trk['idTransaksi'], $trk['idProduk'], $trk['jumlah']);
+                        }
+                        }
+                        ?>
                         <h2>Data Transaksi</h2>
                         <table border="1" width="100%" cellspacing="0" cellpadding="5">
                             <thead>
@@ -500,11 +507,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                                 if($trk['idTransaksi'] == $_POST['idTransaksi']){
                                     cetakTransaksi($trk, $table);
                                 }
-                            }else{
-                                if(timeDiff($trk['tglBeli']) > 1440 && $trk['statusBayar'] == "proses"){
-                                    deleteTransaksi($conn, $trk['idTransaksi'], $trk['idProduk'], $trk['jumlah']);
-                                }
-                                cetakTransaksi($trk, $table);
                             }
                         }
                         }
